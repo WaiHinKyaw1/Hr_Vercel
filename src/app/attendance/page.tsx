@@ -5,6 +5,7 @@ import { Button, Typography, Box, Divider } from "@mui/material";
 import { AttendanceAPI, type AttendanceDetailsAPIRes } from "api";
 import useSWR from "swr";
 import {
+  Loading,
   PageContentWrapper,
   PageHeading,
   PageWrapper,
@@ -27,7 +28,6 @@ export default function AttendancePage() {
     checkOutDone: false,
   });
   const [loading, setLoading] = useState(false);
-  const [checkInTime, setCheckInTime] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<SnackbarDataType>({
     open: false,
   });
@@ -36,11 +36,12 @@ export default function AttendancePage() {
     data: todayAttendance,
     error,
     mutate,
+    isLoading
   } = useSWR("/api/attendances/today", () => {
-    return new Promise<AttendanceDetailsAPIRes>(async (resolve, reject) => {
+    return new Promise<AttendanceDetailsAPIRes[]>(async (resolve, reject) => {
       try {
         const response = await AttendanceAPI.getToday();
-        resolve(response.data);
+        resolve(Array.isArray(response.data) ? response.data : [response.data]);
       } catch (err) {
         reject(err);
       }
@@ -48,13 +49,15 @@ export default function AttendancePage() {
   });
 
   useEffect(() => {
-    if (todayAttendance?.type === "check_in") {
-      setStatus({ checkInDone: true, checkOutDone: false });
-    }
-    if (todayAttendance?.type === "check_out") {
-      setStatus({ checkInDone: true, checkOutDone: true });
-    }
-    if (error) {
+    if (Array.isArray(todayAttendance) && todayAttendance.length > 0) {
+      const checkIn = todayAttendance.find((att) => att.type === "check_in");
+      const checkOut = todayAttendance.find((att) => att.type === "check_out");
+
+      setStatus({
+        checkInDone: !!checkIn,
+        checkOutDone: !!checkOut,
+      });
+    } else if (error) {
       setStatus({ checkInDone: false, checkOutDone: false });
     }
   }, [todayAttendance, error]);
@@ -64,7 +67,14 @@ export default function AttendancePage() {
       navigator.geolocation.getCurrentPosition(
         (pos) =>
           setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-        () => alert("Please allow location permission!")
+        (error: GeolocationPositionError) => {
+          console.error("Error getting location:", error.message);
+        },
+        {
+          enableHighAccuracy: true, // GPS Accuracy
+          timeout: 5000, // getting location timeout
+          maximumAge: 0, // not use cache data
+        }
       );
     } else {
       alert("Geolocation not supported by this browser.");
@@ -81,9 +91,6 @@ export default function AttendancePage() {
         latitude: location.lat,
         longitude: location.lng,
       });
-      if (type === "check_in") {
-        setCheckInTime(dayjs().format("hh:mm A"));
-      }
       setSnackbar({
         open: true,
         text: (res.data as any)?.message,
@@ -100,6 +107,10 @@ export default function AttendancePage() {
       setLoading(false);
     }
   };
+  const checkInTime = todayAttendance?.find((a) => a.type === "check_in")?.time;
+  const checkOutTime = todayAttendance?.find(
+    (a) => a.type === "check_out"
+  )?.time;
 
   return (
     <PageWrapper>
@@ -111,9 +122,11 @@ export default function AttendancePage() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "stretch",
-            p: 4,
+            p: "5px",
+            m: "5px",
           }}
         >
+        
           <Box
             sx={{
               maxWidth: "400px",
@@ -125,27 +138,33 @@ export default function AttendancePage() {
               justifyContent: "center",
               alignItems: "center",
               boxShadow: "0px 0px 10px 0px #00000040",
+              p: "5px",
             }}
           >
-            <Typography
+           {
+            isLoading ? (
+              <Loading open={true}/>
+            ): (
+              <>
+               <Typography
               variant="h6"
               sx={{ fontWeight: 500, fontSize: "24px", mb: 1, mt: 2 }}
             >
               Attendacnce
             </Typography>
             <Divider
-              sx={{ border: "1px solid #FE5A1780", mb: 3, width: "80%" }}
+              sx={{ border: "1px solid #FE5A1780", mb: 3, width: "85%" }}
             />
             <Box
               sx={{
-                width: "70%",
-                p: 2,
+                width: "75%",
+                p: "5px",
                 boxShadow: "0px 0px 10px 0px #00000040",
               }}
             >
               <Typography
                 variant="body2"
-                sx={{ mb: 2, textAlign: "center", fontWeight: 600 }}
+                sx={{ mb: 2, textAlign: "center", fontWeight: 600, mt: "20px" }}
               >
                 {dayjs(new Date().toLocaleDateString("en-US")).format(
                   "MMMM D, YYYY"
@@ -154,7 +173,7 @@ export default function AttendancePage() {
               <Typography
                 variant="body1"
                 color="#000000"
-                sx={{ fontWeight: 400, fontSize: "16px" }}
+                sx={{ fontWeight: 400, fontSize: "16px", textAlign: "center" }}
               >
                 Please check in or out for today.
               </Typography>
@@ -230,7 +249,7 @@ export default function AttendancePage() {
                     variant="body2"
                     sx={{ fontWeight: 600, color: "#333", fontSize: "14px" }}
                   >
-                    {status.checkInDone ? checkInTime : "---"}
+                    {status.checkInDone ? formatTime(checkInTime) : "---"}
                   </Typography>
                 </Box>
 
@@ -296,13 +315,11 @@ export default function AttendancePage() {
                     variant="body2"
                     sx={{ fontWeight: 600, color: "#333", fontSize: "14px" }}
                   >
-                    {status.checkOutDone
-                      ? formatTime(todayAttendance?.time)
-                      : "----"}
+                    {status.checkOutDone ? formatTime(checkOutTime) : "----"}
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ textAlign: "center", mt: 2 }}>
+              <Box sx={{ textAlign: "center", my: 2 }}>
                 {status.checkInDone && !status.checkOutDone && (
                   <>
                     <Typography
@@ -314,7 +331,7 @@ export default function AttendancePage() {
                         color: "#000000",
                       }}
                     >
-                      Latest Action: Check in at :{checkInTime}
+                      Latest Action: Check in at : {formatTime(checkInTime)}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -339,8 +356,7 @@ export default function AttendancePage() {
                         color: "#000000",
                       }}
                     >
-                      Latest Action: Check Out at :
-                      {formatTime(todayAttendance?.time)}
+                      Latest Action: Check Out at :{formatTime(checkOutTime)}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -365,8 +381,11 @@ export default function AttendancePage() {
               </Box>
             </Box>
             <Divider
-              sx={{ border: "1px solid #FE5A1780", my: 3, width: "80%" }}
+              sx={{ border: "1px solid #FE5A1780", my: 3, width: "85%" }}
             />
+              </>
+            )
+           }
           </Box>
           <Box>
             <SnackbarMessage
