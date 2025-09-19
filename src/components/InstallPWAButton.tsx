@@ -33,11 +33,23 @@ export default function InstallPWAButton() {
       );
     }
   };
-
   return (
     <button
       onClick={handleClick}
-      style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 15px", fontSize: "14px", fontWeight: 500, cursor: "pointer", borderRadius: "999px", border: "none", background: "linear-gradient(90deg, #1d3d63, #3b82f6)", color: "#fff", boxShadow: "0 4px 10px rgba(0,0,0,0.15)", }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        padding: "10px 15px",
+        fontSize: "14px",
+        fontWeight: 500,
+        cursor: "pointer",
+        borderRadius: "999px",
+        border: "none",
+        background: "linear-gradient(90deg, #1d3d63, #3b82f6)",
+        color: "#fff",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+      }}
     >
       <ArrowCircleDownIcon /> Install App
     </button>
