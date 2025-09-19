@@ -17,22 +17,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/mobile-1080x1920.jpg",
-      "sizes": "900x1600",
-      "type": "image/jpeg", 
-      "label": "Mobile Home"
-
-    },
-    {
-      "src": "/screenshots/desktop-1920x1080.jpg",
-      "sizes": "1600x900",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Desktop Dashboard"
-    }
   ]
 }
 

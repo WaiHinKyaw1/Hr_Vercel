@@ -45,7 +45,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
-    console.log(formData);
     try {
       if (formData.username && formData.password) {
         setOpenOverlayLoading(true);
