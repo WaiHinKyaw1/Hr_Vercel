@@ -15,9 +15,7 @@ export default function InstallPWAButton() {
 
     if (!inStandalone && !isInstalled) {
       setShowButton(true);
-    } else {
-      setShowButton(false); 
-    }
+    } 
   }, [isInstalled]);
 
   if (!showButton) return null; 
