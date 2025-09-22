@@ -25,14 +25,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-       <head>
-        <link rel="manifest" href="/manifest.json"/>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#1976d2" />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/attendance192.png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/icons/attendance192.png" />
       </head>
       <body className={`${raleway.variable}`}>
         <NextAuthProvider>
           <ThemeProvider options={{ key: "mui" }}>
-         <Layout> {children}</Layout>
+            <Layout> {children}</Layout>
           </ThemeProvider>
         </NextAuthProvider>
         <RegisterServiceWorker />
