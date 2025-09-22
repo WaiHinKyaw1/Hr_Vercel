@@ -1,29 +1,31 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 
+// PWA install ကို handle လုပ်ပေးတဲ့ hook
 export const usePWAInstall = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null); // deferredPrompt ကို သိမ်းထားရန်
+  const [isInstalled, setIsInstalled] = useState(false); // app ရှိ/မရှိ စစ်ဆေးရန်
 
   useEffect(() => {
+    // App တက်နေတဲ့နေရာကို စစ်ဆေးပေးတဲ့ function
     const checkInstalled = () => {
-      if (window.matchMedia("(display-mode: standalone)").matches) return true;
-      if ((window.navigator as any).standalone) return true;
-      return false;
+      return (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        (window.navigator as any).standalone
+      );
     };
 
     setIsInstalled(checkInstalled());
 
     const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
+      e.preventDefault(); // ပုံမှန် prompt ကို ပယ်ချိန်
+      setDeferredPrompt(e); // deferredPrompt ကို သိမ်းထား
     };
 
     const handleAppInstalled = () => {
       setIsInstalled(true);
-      setDeferredPrompt(null);
+      // setDeferredPrompt(null);
     };
-
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     window.addEventListener("appinstalled", handleAppInstalled);
 
@@ -36,7 +38,7 @@ export const usePWAInstall = () => {
   const triggerInstall = useCallback(async () => {
     if (!deferredPrompt) {
       alert(
-        "Open this app in Chrome or Edge to install it.\nIf you previously uninstalled, use browser menu → Add to Home Screen"
+        "Please open the app in Chrome or Edge and use 'Add to Home Screen' from the browser menu."
       );
       return false;
     }
@@ -47,6 +49,7 @@ export const usePWAInstall = () => {
     if (outcome === "accepted") {
       setIsInstalled(true);
     }
+
     setDeferredPrompt(null);
     return outcome === "accepted";
   }, [deferredPrompt]);
