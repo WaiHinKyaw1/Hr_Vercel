@@ -25,7 +25,6 @@ import dayjs from "dayjs";
 import { calDiffTime, formatTime, calcLateTime, formatLateTime } from "utils";
 import Image from "next/image";
 import ExportButton from "./components/ExportButton";
-import AppSystemBarMimic from "components/AppSystemBarMimic";
 
 export default function StickyTwoColumnsTable() {
   const today = dayjs().format("YYYY-MM-DD");
@@ -81,7 +80,7 @@ export default function StickyTwoColumnsTable() {
     snackbar={snackbar}
     handleOnCloseSnackbar={() => setSnackbar({ open: false })}
     >
-      <AppSystemBarMimic/>
+      
       <PageHeading title="Employee Attendances" />
       <PageContentWrapper>
         <Box
