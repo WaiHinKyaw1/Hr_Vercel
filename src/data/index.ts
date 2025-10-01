@@ -47,14 +47,14 @@ export const sideMenus: SideMenu[] = [
     label: "Position",
     active: "/icons/sidemenus/position.png",
     href: "/positions",
-    allowedRoles: ["management"],
+    
   },
   {
     src: "/icons/sidemenus/leave_type.png",
     label: "Leave Type",
     active: "/icons/sidemenus/leave_type.png",
     href: "/leave-types",
-    allowedRoles: ["management"],
+    
   },
   {
     src: "/icons/sidemenus/leave.png",
@@ -75,7 +75,7 @@ export const sideMenus: SideMenu[] = [
     label: "Off Day",
     active: "/icons/sidemenus/off_day.png",
     href: "/off-days",
-    allowedRoles: ["management"],
+    
   },
 ];
 

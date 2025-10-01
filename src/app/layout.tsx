@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import RegisterServiceWorker from "../components/RegisterServiceWorker";
 import { ThemeProvider } from "theme";
 import { Raleway } from "next/font/google";
+import AppSystemBarMimic from "components/AppSystemBarMimic";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -36,6 +37,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <ThemeProvider options={{ key: "mui" }}>
             <Layout> {children}</Layout>
+            <AppSystemBarMimic/>
           </ThemeProvider>
         </NextAuthProvider>
         <RegisterServiceWorker />

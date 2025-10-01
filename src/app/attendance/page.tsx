@@ -14,6 +14,7 @@ import {
 } from "components";
 import dayjs from "dayjs";
 import { formatTime } from "utils";
+import AppSystemBarMimic from "components/AppSystemBarMimic";
 
 export default function AttendancePage() {
   const [location, setLocation] = useState<{
