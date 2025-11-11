@@ -1,9 +1,11 @@
 {
+  "id": "hr-frontend",
   "name": "HR Frontend",
   "short_name": "HR",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
   "orientation": "portrait",
