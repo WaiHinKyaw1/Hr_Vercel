@@ -4,13 +4,14 @@
   "short_name": "HR",
   "start_url": "/",
   "scope": "/",
-  "display": "standalone",
-  "display_override": ["standalone", "fullscreen", "minimal-ui"],
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
   "orientation": "portrait",
   "description": "HR management progressive web app",
   "categories": ["business", "productivity"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icons/attendance192.png",

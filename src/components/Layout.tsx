@@ -5,7 +5,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Loading } from "./Loading";
 import useUser from "hooks/useUser";
-import OfflinePreventer from "./OfflinePreventer";
 
 interface Props {
   children: ReactNode;
@@ -24,7 +23,6 @@ const Layout = ({ children }: Props) => {
   if (status == "loading") return <Loading style={{ height: "100vh" }} />;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <OfflinePreventer/>
       <div>
         {pathname !== "/login" ? (
           status == "authenticated" ? (
