@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.hrattendance.twa",
+      "sha256_cert_fingerprints": ["98:5A:D7:2E:7A:BE:3A:17:45:29:86:C4:1F:F3:4F:9D:42:6E:94:7C:7D:82:F9:B5:E6:3F:50:2D:76:E7:1E:73"]
+    }
+  }]
