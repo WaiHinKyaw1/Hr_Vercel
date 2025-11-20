@@ -6,6 +6,7 @@ import RegisterServiceWorker from "../components/RegisterServiceWorker";
 import { ThemeProvider } from "theme";
 import { Raleway } from "next/font/google";
 import AppSystemBarMimic from "components/AppSystemBarMimic";
+import HideURLBar from "../components/HideURLBar";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -46,6 +47,7 @@ export default function RootLayout({
           </ThemeProvider>
         </NextAuthProvider>
         <RegisterServiceWorker />
+        <HideURLBar />
       </body>
     </html>
   );
