@@ -1,7 +1,7 @@
 {
   "id": "hr-frontend",
   "name": "HR Frontend",
-  "short_name": "HR",
+  "short_name": "Attendance",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
